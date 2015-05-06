@@ -1,0 +1,156 @@
+//
+//  PrefixHeader.pch
+//  TastyFood
+//
+//  Created by love_ping891122 on 14/12/9.
+//  Copyright (c) 2014年 love_ping891122. All rights reserved.
+//
+
+#ifndef TastyFood_PrefixHeader_pch
+#define TastyFood_PrefixHeader_pch
+
+
+#import "UIButton+BindArgs.h"
+#import "UIScrollView+BindArgs.h"
+#import "UIImageView+WebCache.h"
+#import "UIView+BindArgs.h"
+#import "UIImageView+WebCache.h"
+#import "UIImageView+BindArgs.h"
+#import "UITableView+BindArgs.h"
+#import "UILabel+BindArgs.h"
+#import "UITextView+BindArgs.h"
+#import "UITextField+BindArgs.h"
+#import <YLTextView/YLTextView.h>
+
+
+#import "ImagePlayerView.h"
+#import "JSBadgeView.h"
+#import <AFPopupView/AFPopupView.h>
+#import "ASIHttpMangment.h"
+#import "SVProgressHUD.h"
+#import "TimeDateClassTool.h"
+#import "SingletonTool.h"
+
+
+
+
+
+#import "firstViewController.h"
+#import "loginViewController.h"
+#import "registerViewController.h"
+
+
+#define  IP @"192.168.1.174:8080"
+#define  loginpath @"/mbss/login/loginJson"
+
+
+
+
+#define loginurl  [NSString stringWithFormat:@"%@%@",IP,loginpath]
+
+
+
+/* 颜色宏定义 */
+
+#define RGBAcolor(r,g,b,a)  [UIColor colorWithRed:(r)/255.0f green:(g)/255.0f blue:(b)/255.0f alpha:(a)]
+
+//主题黄色
+#define YellowColor_APP RGBAcolor(250, 140, 0, 1)
+
+//主题青绿色
+#define GreenColor_APP  RGBAcolor(70, 220, 220, 1)
+
+//背景灰色 （衬托白色）
+#define GrayColor_APP  RGBAcolor(230, 230, 230, 1)
+
+//主题黄色
+#define YellowColor_APP RGBAcolor(250, 140, 0, 1)
+//主题青绿色
+#define GreenColor_APP  RGBAcolor(70, 220, 220, 1)
+//背景灰色 （衬托白色）
+#define GrayColor_APP  RGBAcolor(230, 230, 230, 1)
+//黑色
+#define BlackColor_APP  RGBAcolor(50, 50, 50, 1)
+
+#define GrayColor_DetailLabel  RGBAcolor(150, 150, 150, 1)
+//蓝色
+
+
+
+ #define window_APP [UIApplication sharedApplication].windows objectAtIndex:0]
+
+
+
+/* 屏幕尺寸宏定义 */
+
+
+#define WIGHT   [[UIScreen mainScreen] bounds].size.width
+#define HEIGHT  [[UIScreen mainScreen] bounds].size.height
+#define iPhone5 ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 1136), [[UIScreen mainScreen] currentMode].size) : NO)
+#define iPhone6 ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(750, 1136), [[UIScreen mainScreen] currentMode].size) : NO)
+#define iPhone6Plus ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1242, 2208), [[UIScreen mainScreen] currentMode].size) : NO)
+
+
+#define isiPhone5_Wight   [[UIScreen mainScreen] bounds].size.width==320?YES:NO
+#define isiPhone6_Wight   [[UIScreen mainScreen] bounds].size.width==375?YES:NO
+#define isiPhone6P_Wight   [[UIScreen mainScreen] bounds].size.width==414?YES:NO
+
+/*****
+iPhone5分辨率320x568，像素640x1136，@2x
+
+2.iPhone6分辨率375x667，像素750x1334，@2x
+
+3.iPhone6 Plus分辨率414x736，像素1242x2208，@3x，（注意，在这个分辨率下渲染后，图像等比降低pixel分辨率至1080p(1080x1920)
+******/
+
+
+//IOS版本
+#define IOS_VERSION [[[UIDevice currentDevice] systemVersion] floatValue]
+#define IOS_7   (IOS_VERSION >= 7.0)
+#define IOS_8   (IOS_VERSION >= 8.0)
+
+//****线程操作******/
+
+/*开启异步线程*/
+#define kASync(block) dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), block)
+/*开启后台线程*/
+#define kBackground(block) dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), block)
+/*启用主线程，如刷新UI等操作*/
+#define kHandleMain(block) dispatch_sync(dispatch_get_main_queue(),block);
+
+
+
+
+
+
+/*--NSUserDefaults--*/
+
+//用户信息存储
+#define Defaults_Loginbool     @"login" //用户登录状态
+#define Defaults_LoginName     @"username" //登录名
+#define Defaults_LoginPsw      @"password"//密码
+#define Defaults_isRememberPsw @"isRememberPsw" //用户登录状态
+#define Defaults_Token         @"kDefaults_Token" //token
+#define Defaults_userInfo        @"kDefaults_userinformation" //用户信息
+
+
+#define GetLoginStatus [[NSUserDefaults standardUserDefaults] stringForKey:Defaults_Loginbool]
+#define GetLoginName   [[NSUserDefaults standardUserDefaults] stringForKey:Defaults_LoginName]
+#define GetLoginPwd   [[NSUserDefaults standardUserDefaults] stringForKey:Defaults_LoginPsw]
+#define GetToken   [[NSUserDefaults standardUserDefaults] stringForKey:Defaults_Token]
+
+
+//NSUserDefaults get set 方法
+#define SetDefaults(key,value)       [[NSUserDefaults standardUserDefaults] setObject:value forKey:key]
+#define GetDefaults(key)             [[NSUserDefaults standardUserDefaults] objectForKey:key]
+
+
+
+
+
+
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#endif

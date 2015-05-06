@@ -1,0 +1,32 @@
+//
+//  MyApp_LocationManager.h
+//  MyApp
+//
+//  Created by Apple on 15/1/25.
+//  Copyright (c) 2015年 dlt. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+#import "BMapKit.h"
+#import "BMKLocationService.h"
+
+
+@interface MyApp_LocationManager : NSObject<BMKLocationServiceDelegate,BMKGeoCodeSearchDelegate>
+{
+    BMKLocationService* _locationService;
+
+}
++(MyApp_LocationManager*)shareInstance;
+
+@property(strong, nonatomic)BMKReverseGeoCodeResult *addrResult;// 地址
+
+//更新位置
+-(void)GetLocationCoor;
+
+
+//把当时经纬度转换成地址
++(NSString*)GetLocationAddressWith:(CLLocationCoordinate2D)coordinate2D;
+
+//把当时经纬度转换成地址
+-(void)GetLocationAddressWith:(CLLocationCoordinate2D)coordinate2D;
+@end

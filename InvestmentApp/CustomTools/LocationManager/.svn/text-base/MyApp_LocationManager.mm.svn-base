@@ -1,0 +1,102 @@
+//
+//  MyApp_LocationManager.m
+//  MyApp
+//
+//  Created by Apple on 15/1/25.
+//  Copyright (c) 2015年 dlt. All rights reserved.
+//
+
+#import "MyApp_LocationManager.h"
+#import "AppDelegate.h"
+@implementation MyApp_LocationManager
+
+
++(MyApp_LocationManager*)shareInstance
+{
+    static MyApp_LocationManager* singleton = nil;
+    static dispatch_once_t once = 0;
+    dispatch_once(&once, ^{
+        singleton  = [MyApp_LocationManager alloc];
+    });
+    return  singleton;
+}
+//更新位置
+-(void)GetLocationCoor
+{
+    if (!_locationService) {
+        //初始化BMKLocationService
+        _locationService = [[BMKLocationService alloc]init];
+        _locationService.delegate = self;
+        //启动LocationService
+    }
+    [_locationService startUserLocationService];
+
+}
+//实现相关delegate 处理位置信息更新
+//处理方向变更信息
+- (void)didUpdateUserHeading:(BMKUserLocation *)userLocation
+{
+    NSLog(@"heading is %@",userLocation.heading);
+    
+}
+//处理位置坐标更新
+- (void)didUpdateBMKUserLocation:(BMKUserLocation *)userLocation
+{
+    NSLog(@"didUpdateUserLocation lat %f,long %f",userLocation.location.coordinate.latitude,userLocation.location.coordinate.longitude);
+
+    //获取用户的当前的经纬度
+    [AppDelegate sharedAppDelegate].currentLocationCoor = userLocation.location.coordinate;
+    
+    [self GetLocationAddressWith:[AppDelegate sharedAppDelegate].currentLocationCoor];
+    
+      [_locationService stopUserLocationService];
+    //获取用户乘车方案
+}
+- (void)didFailToLocateUserWithError:(NSError *)error
+{
+      [_locationService stopUserLocationService];
+}
+
+//把当时经纬度转换成地址
+-(void)GetLocationAddressWith:(CLLocationCoordinate2D)coordinate2D
+{
+//    NSDictionary* addressDict = BMKConvertBaiduCoorFrom(coordinate2D, BMK_COORDTYPE_COMMON);
+    
+    BMKGeoCodeSearch *search = [[BMKGeoCodeSearch alloc]init];
+    search.delegate = self;
+    BMKReverseGeoCodeOption* geo = [[BMKReverseGeoCodeOption alloc] init];
+    geo.reverseGeoPoint = coordinate2D;
+    BOOL flag = [search reverseGeoCode:geo];
+    if(flag)
+    {
+        NSLog(@"根据地理坐标获取地址信息成功");
+        // 设置
+    }
+    else
+    {
+        NSLog(@"根据地理坐标获取地址信息失败");
+    }
+
+ 
+}
+#pragma mark - BMKSearchDelegate
+- (void)onGetReverseGeoCodeResult:(BMKGeoCodeSearch *)searcher result:(BMKReverseGeoCodeResult *)result errorCode:(BMKSearchErrorCode)error
+{
+     NSLog(@"当前地址：%@\n",result.address);
+    
+     NSLog(@"当前省：%@",result.addressDetail.province);
+     NSLog(@"当前市：%@",result.addressDetail.city );
+     NSLog(@"当前区：%@",result.addressDetail.district);
+     NSLog(@"当前街道：%@",result.addressDetail.streetName);
+     NSLog(@"当前门牌：%@",result.addressDetail.streetNumber);
+    self.addrResult = result;
+}
+
+- (void)onGetGeoCodeResult:(BMKGeoCodeSearch *)searcher result:(BMKGeoCodeResult *)result errorCode:(BMKSearchErrorCode)error
+{
+
+
+    NSLog(@"2222");
+
+}
+@end
